@@ -15,8 +15,8 @@ library(e1071)
 
 # predicting the cluster
 predict_cl <- function(input){
-  require(caret)
-  require(e1071)
+#  require(caret)
+#  require(e1071)
   #input can either be csv file or data
   newdata <- if(is.character(input) && file.exists(input)){
     read.csv(input)
