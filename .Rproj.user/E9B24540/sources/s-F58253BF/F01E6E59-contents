@@ -1,0 +1,110 @@
+#library(plyr)
+#d3=ddply(d1, "Problem.Hierarchy", function(x) head(x[order(x$Step.Duration..sec., decreasing = TRUE) , ], 100))
+
+d2 = read.csv("d4.csv",header =TRUE)
+d2$X =NULL
+
+
+# Preprocessing the KDD dataset in case not done
+#d2$Opportunity.SubSkills. <- gsub('~~', '+', d2$Opportunity.SubSkills.)
+#d2$Opportunity.KTracedSkills. <- gsub('~~', '+', d2$Opportunity.KTracedSkills.)
+#d2$Opportunity.Rules. <- gsub('~~', '+', d2$Opportunity.Rules.)
+
+#d2$Row =NULL
+
+#count_subskill =count.fields(textConnection(d2$Opportunity.SubSkills.), sep = "+",blank.lines.skip = FALSE)
+#count_tracedskill =count.fields(textConnection(d2$Opportunity.KTracedSkills.), sep = "+",blank.lines.skip = FALSE)
+#count_rules =count.fields(textConnection(d2$Opportunity.Rules.), sep = "+",blank.lines.skip = FALSE)
+
+#d2 = cbind.data.frame(d2,count_subskill,count_tracedskill,count_rules)
+
+#d2$Opportunity.SubSkills. <- gsub("^$", "0", d2$Opportunity.SubSkills.)
+#d2$Opportunity.KTracedSkills. <- gsub("^$", "0", d2$Opportunity.KTracedSkills.)
+#d2$Opportunity.Rules. <- gsub("^$", "0", d2$Opportunity.Rules.)
+
+#x <- d2$Opportunity.SubSkills.
+#a <- lapply(x, function(x) eval(parse(text=x)))
+#d2$Opportunity.SubSkills. <- a
+#d2$Opportunity.SubSkills. <- as.numeric(d2$Opportunity.SubSkills.)
+
+#y <- d2$Opportunity.KTracedSkills.
+#b <- lapply(y, function(x) eval(parse(text=x)))
+#d2$Opportunity.KTracedSkills. <- b
+#d2$Opportunity.KTracedSkills. <- as.numeric(d2$Opportunity.KTracedSkills.)
+
+#z <- d2$Opportunity.Rules.
+#c <- lapply(z, function(x) eval(parse(text=x)))
+#d2$Opportunity.Rules.. <- c
+#d2$Opportunity.Rules. <- as.numeric(d2$Opportunity.Rules.)
+
+#d2$Opportunity.Rules.. =NULL
+#d2$X =NULL
+
+#....Factor into integers
+   #d2$PH = as.numeric(d2$Problem.Hierarchy)
+
+#To shift the step duration column outside
+d2 = d2[,c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,15)]
+#Omittin NA values
+d2 = na.omit(d2)
+
+
+#...............Model
+
+# Splitting the dataset into the Training set and Test set
+#install.packages('caTools')
+library(caTools)
+set.seed(123)
+split = sample.split(d2$PH, SplitRatio = 0.8)
+training_set = subset(d2, split == TRUE)
+test_set = subset(d2, split == FALSE)
+
+
+# Feature Scaling
+training_set[,c(3:15)] = scale(training_set[,c(3:15)])
+test_set[,c(3:15)] = scale(test_set[,c(3:15)])
+
+
+# Applying PCA
+#install.packages('caret')
+library(caret)
+#install.packages('e1071')
+library(e1071)
+pca = preProcess(x = training_set[,c(3:15)], method = 'pca', pcaComp = 2)
+training_set_pca = predict(pca, training_set)
+test_set_pca = predict(pca, test_set)
+
+# Using the dendrogram to find the optimal number of clusters
+dendrogram = hclust(d = dist(training_set_pca[,c(4,5)], method = 'euclidean'), method = 'ward.D')
+plot(dendrogram,
+     main = paste('Dendrogram'),
+     xlab = 'Chapters',
+     ylab = 'Euclidean distances')
+
+# Fitting Hierarchical Clustering to the dataset
+hc = hclust(d = dist(training_set_pca[,c(4,5)], method = 'euclidean'), method = 'ward.D')
+y_hc = cutree(hc, 5)
+
+# Visualising the clusters
+library(cluster)
+clusplot(training_set_pca[,c(4,5)],
+         y_hc,
+         lines = 0,
+         shade = TRUE,
+         color = TRUE,
+         labels= 2,
+         plotchar = FALSE,
+         span = TRUE,
+         main = paste('Clusters of chapters'),
+         xlab = 'PC1',
+         ylab = 'PC2')
+
+# function to find medoid in cluster i
+clust.centroid = function(i, dat, clusters) {
+  ind = (clusters == i)
+  colMeans(dat[ind,])
+}
+
+centroid = sapply(unique(y_hc), clust.centroid, training_set_new[,c(5:15)], y_hc)
+
+

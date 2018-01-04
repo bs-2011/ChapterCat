@@ -1,0 +1,107 @@
+---
+title: "Alter learning path"
+author: "Balveer Singh"
+date: "3 January 2018"
+output:
+  word_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1.1 Introduction
+
+This package is used to determine how far along a particular learning path a student has progressed and alter that learning path to suit the student. Alter learning path is a kind of intervention, so that student can learn better. 
+
+## 1.2 Model used
+*__Hidden Markov Model__*
+
+## 1.3 HMM Algorithm
+Hidden Markov Model (HMM) is a statistical Markov model in which the system being modeled is assumed to be a Markov process with unobserved (i.e. hidden) states.
+A "dynamic" version of the bayesian-network that applies to time series/temporal sequences. Given hidden states that transition between each other with some probability (a markov chain), if we observe some observation (each with an emission probability corresponding to those hidden temporal states) we can predict the current and subsequent temporal events. The more observations we make, the better estimate we have of the status of those hidden states.  
+  
+*__HOW I USED HMM__*
+
+The hidden markov model could be used to track the mastery of the student and its evolution through time. 
+
+Further for each student once a HMM is set and transition probabilities uncovered, we could then predict the next events and observe how the predicted mastery changes with the application of different learning styles/learning path.
+
+__How I choose the appropriate hidden states?__
+We could define the hidden states as the ["four stages of competence"](https://en.wikipedia.org/wiki/Four_stages_of_competence)
+
+
+
+## 1.4 Description of tasks involved 
+
+###___TASK1___  
+ In the context of a course, the fixed learning path is the exact order of lesson and then under each LESSON, the exact order of topics.  There are also some fixed order of quiz or assessments.
+ 
+___Approach___ : We should look at the set of curated content that we need to enable only for particular students who are weak in specific concepts.  This can be determined either by them not able to answer 2 or 3 questions that are posed within the __topic__ when they are learning or at the end of the __lesson__ when they do not do that well in their assessments.
+  
+ Using HMM, we want to alter the learning path of a particular student by forcing them to review certain concepts providing them additional curated content or even reviewing existing ___topic___.  We may also want to bring students specific additional examples or sample assessment questions to get them comfortable.  
+   
+___Plots___ : 
+```{r}
+HMMfit  = readRDS(file = "HMMfit.rds")
+# x = readRDS(file = "x.rds")
+HMMpost = depmixS4::posterior(HMMfit)
+
+par(mar=c(1,1,1,1))
+# Plot of posterior probabilities
+layout(1:5)
+plot(HMMpost$state, type='l', main='State in which all the students are in particular course', xlab='', ylab='state')
+plot(HMMpost$S1, type='l', main='Probab. of State 1', xlab='', ylab='Prob. S_1',col = "Green")
+plot(HMMpost$S2, type='l', main='Probab. of State 2', xlab='', ylab='Prob. S_2',col = "Blue")
+plot(HMMpost$S3, type='l', main='Probab. of State 3', xlab='', ylab='Prob. S_3',col = "Red")
+plot(HMMpost$S4, type='l', main='Probab. of State 4', xlab='', ylab='Prob. S_4',col = "Yellow")
+
+# Plot of posterior probabilities
+layout(1:5)
+plot(HMMpost$state[25:199], type='l', main='State in which student "stu_0102350af2', xlab='', ylab='state',abline(v = c(4,28,46,96,159)))
+plot(HMMpost$S1[25:199], type='l', main='Probab. of State 1', xlab='Topics', ylab='Prob. S_1',col = "Brown",abline(v = c(4,28,46,96,159)))
+plot(HMMpost$S2[25:199], type='l', main='Probab. of State 2', xlab='Topics', ylab='Prob. S_2',col = "Green",abline(v = c(4,28,46,96,159)))
+plot(HMMpost$S3[25:199], type='l', main='Probab. of State 3', xlab='Topics', ylab='Prob. S_3',col = "Red",abline(v = c(4,28,46,96,159)))
+plot(HMMpost$S4[25:199], type='l', main='Probab. of State 4', xlab='Topics', ylab='Prob. S_4',col = "Yellow",abline(v = c(4,28,46,96,159)))
+
+```
+
+         ___Relating hidden stages with 4 stages of competency___ 
+Meaning of states according to me after seeing graphs and many observations in the datasets, corresponding to states.  
+___state1(Conscious incompetence)___: In this state student concept scores are low, his performance is around b/w 50 to 60. He is trying with many attempts to answer the problems.  
+___state2(Unconscious competence)___: Student in this state is getting a good score above 80 with high probability. His concept is almost clear. He is able to answer the problem in 1st attempt.  
+___state3(Unconscious incompetence)___: This is the worst state. Student concept score is very poor. He is trying to solve problems with hints,  taking more than the required time to solve the problems.  
+___state4(Conscious competence)___: This is kind of good state but there is a chance of scoring bad marks. Concept score is good in this state, but scoring bad marks is because of the subconcept required to solve is not fulfilled.     
+The x-axis represents the question number asked on specific topics. Two successive vertical line represents one lesson.  
+  
+___Solution___ : Whenever student hit the 1st and 3rd state we will push the curated contents.
+Alpath package have function name task1, which let us know the concept name in which we  have to push curated content.  
+The training data in this case will be that course.
+  
+###___TASK2___   
+ In the CONTEXT of a Micro Degree like a Certification in Game Programming, Certification in 3D Printing, Certification in Space technology etc., the learning path is a set of COURSES with some of the COURSES having pre-requisites in order to continue the certification path.  
+ If a student "passes" a COURSE in the Certification program but does not get above 70% or 80%, we can allow them to proceed with the next COURSE but understanding specifically which concepts from the previous COURSE they are weak in, we can enhance and provide additional content and examples, especially in those weak areas, as they are taking the new COURSE.    
+   
+___Solution:___ In this task intervention are little relax in case of weak performance, but we have to help them in subsequent courses to improve concept in which they are weak. For that I have created the predict function, which will predict the successive hidden state of the next Lessons, topics, etc for every student.
+Suppose the predictions results 3 as hidden state we will provide the help to that student. 
+Lookback period for training the model in this case will all the course covered by that student in that specialization.   
+  
+___Problems:___ At the time of documenting, We do not have the entire Certification Programs mapped out and Knowledge Concept Graph are also not available so we cannot track down the linked concept and weak concept respectively. Hence further in future this model can be modified for good results.   
+  
+###___TASK3___  
+In the CONTEXT of learning a set of SKILLS or CONCEPTS for a particular GRADE level, the learning path could be a set of courses that cover a variety of CONCEPTS that are necessary for that GRADE.  So, a student in GRADE 7 might be expected to master 54 CONCEPTS spread across Computer Science, Math, Physics, Art, and Engineering.  
+
+Both CURATED content as well as altering the order of Lessons or Topics are both possible in this case.  
+___Solution:___  
+Bringing the curated content is similar to Task1, reordering of the lessons and topics can be done by following steps:  
+1) Suppose student is entering to grade 11, then take training dataset as a course completed in past 2 years(i.e grade9, grade10 courses).  
+2) Find the common concepts for the courses in grade 11 using Knowledge Concept Graphs or by search through grade 9th and 10th courses.  
+3) Find the hidden states for the common concepts using model developed in task1.  
+4)Reorder the Lessons and Topics according to hidden states, for example hidden state 3 will be ordered top, then 1st state, then 2nd ,and then 4th after which the remaining lessons.      
+
+
+
+
+
