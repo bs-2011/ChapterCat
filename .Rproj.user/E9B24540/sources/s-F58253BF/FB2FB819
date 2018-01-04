@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1515059576157.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "FB2FB819",
+    "lastKnownWriteTime" : 0,
+    "last_content_update" : 1515059576157,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "D17DEB7B",
+        "caption" : "centroid",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=centroid&cache_key=D17DEB7B",
+        "displayedObservations" : 3,
+        "environment" : "",
+        "object" : "centroid",
+        "preview" : 0,
+        "totalObservations" : 3,
+        "variables" : 10
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

@@ -1,6 +1,7 @@
 pca = readRDS(file = "./man/pca.rds")
 course1 = readRDS(file = "./man/course1.rds")
 course1_pca = readRDS(file = "./man/course1_pca.rds")
+require(caret)
 
 #' A Predict_Cluster Function
 #'
