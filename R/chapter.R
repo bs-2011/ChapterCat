@@ -1,7 +1,7 @@
 pca = readRDS(file = "/datadrive/model/pca.rds")
 course1 = readRDS(file = "./man/course1.rds")
 course1_pca = readRDS(file = "./man/course1_pca.rds")
-
+library(caret)
 #' A Predict_Cluster Function
 #'
 #' This function allows you to predict the cluster group in which point lies
