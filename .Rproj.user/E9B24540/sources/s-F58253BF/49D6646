@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1515065584248.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "49D6646",
+    "lastKnownWriteTime" : 8389754659302220320,
+    "last_content_update" : 1515065584248,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "25F47C66",
+        "caption" : "course1",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=course1&cache_key=25F47C66",
+        "displayedObservations" : 4126,
+        "environment" : "",
+        "object" : "course1",
+        "preview" : 0,
+        "totalObservations" : 4126,
+        "variables" : 13
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
