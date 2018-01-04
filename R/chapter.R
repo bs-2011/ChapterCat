@@ -1,4 +1,4 @@
-pca = readRDS(file = "./man/pca.rds")
+pca = readRDS(file = "/datadrive/model/pca.rds")
 course1 = readRDS(file = "./man/course1.rds")
 course1_pca = readRDS(file = "./man/course1_pca.rds")
 
@@ -46,7 +46,7 @@ predict_cl <- function(input){
  centroid_pca = sapply(unique(y_hc), clust.centroid, course1_pca[,c(4:5)], y_hc)
  centroid_pca = as.data.frame(t(centroid_pca))
 
- newdata_pca = caret::predict(pca, newdata)
+ newdata_pca = predict(pca, newdata)
 
   points = rbind(centroid_pca,newdata_pca[,c("PC1","PC2")])
   dist_matrix = dist(points)
