@@ -30,6 +30,10 @@ predict_cl <- function(input){
  summary = sapply(course1[,c(4:13)], function(cl) list(means=mean(cl,na.rm=TRUE), sds=sd(cl,na.rm=TRUE)))
  summary = as.data.frame(summary)
 
+ # Fitting Hierarchical Clustering to the dataset
+ hc = hclust(d = dist(course1_pca[,c(4,5)], method = 'euclidean'), method = 'ward.D')
+ y_hc = cutree(hc, 3)
+
  # function to find centroid in cluster i
  clust.centroid = function(i, dat, clusters) {
    ind = (clusters == i)

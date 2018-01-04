@@ -109,6 +109,7 @@ ___Problems:___ At the time of documenting, We do not have the entire Certificat
 In the CONTEXT of learning a set of SKILLS or CONCEPTS for a particular GRADE level, the learning path could be a set of courses that cover a variety of CONCEPTS that are necessary for that GRADE.  So, a student in GRADE 7 might be expected to master 54 CONCEPTS spread across Computer Science, Math, Physics, Art, and Engineering.  
 
 Both CURATED content as well as altering the order of Lessons or Topics are both possible in this case.  
+  
 ___Solution:___  
 Bringing the curated content is similar to Task1, reordering of the lessons and topics can be done by following steps:  
 1) Suppose student is entering to grade 11, then take training dataset as a course completed in past 2 years(i.e grade9, grade10 courses).  
@@ -116,6 +117,9 @@ Bringing the curated content is similar to Task1, reordering of the lessons and 
 3) Find the hidden states for the common concepts using model developed in task1.  
 4)Reorder the Lessons and Topics according to hidden states, for example hidden state 3 will be ordered top, then 1st state, then 2nd ,and then 4th after which the remaining lessons.      
 
+
+## Package in Action
+Using task1 function:![](postman1.png)
 
 
 

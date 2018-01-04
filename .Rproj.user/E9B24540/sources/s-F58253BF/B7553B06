@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "ISO8859-1",
     "folds" : "",
-    "hash" : "1744768698",
+    "hash" : "0",
     "id" : "B7553B06",
-    "lastKnownWriteTime" : 1515045503,
-    "last_content_update" : 1515045503172,
+    "lastKnownWriteTime" : 1515057421,
+    "last_content_update" : 1515057421123,
     "path" : "C:/Users/user/Desktop/Intern-bitwise/Package/Chapter_categorizing---BayesianClust/ChapterCat/R/chapter.R",
     "project_path" : "R/chapter.R",
     "properties" : {
-        "cursorPosition" : "2,47",
-        "scrollLine" : "0"
+        "cursorPosition" : "34,21",
+        "scrollLine" : "24"
     },
     "relative_order" : 1,
     "source_on_save" : false,
