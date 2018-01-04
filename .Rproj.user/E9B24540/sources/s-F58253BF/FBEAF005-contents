@@ -1,7 +1,7 @@
 Package: ChapterCat
 Type: Package
 Title: HMM & Bayesian Clustering
-Version: 1.0
+Version: 1.5
 Author: Balveer<balveers871@gmail.com>
 Maintainer: Balveer<balveers871@gmail.com>
 Depends : 
