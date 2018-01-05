@@ -52,14 +52,15 @@ predict_cl <- function(input){
   print(c_index)
   #returning the prediction
   if(c_index == 1){
-    print(paste("Problem is of HARD level ",c_index))
+    output <- paste("Problem is of HARD level ",c_index)
 
   } else if(c_index  ==2){
-    print(paste("Problem is of EASY level ",c_index))
+    output <- paste("Problem is of EASY level ",c_index)
   }
    else(c_index ==3)
-  print(paste("Problem is of MEDIUM level ",c_index))
+   output <- paste("Problem is of MEDIUM level ",c_index)
 
+  return(output)
 
 }
 
