@@ -50,8 +50,14 @@ predict_cl <- function(input){
   dist_matrix = dist_matrix[1:3,]
   c_index =  which.min(dist_matrix[,4])
 
-  #prediction by predict_clust
-  newdata$cluster_number <- c_index
-  return(newdata$cluster_number)
+  #returning the prediction
+  if(c_index == 1){
+    print("Problem is of HARD level ")
+  } else if(c_index  ==2){
+    print("Problem is of EASY level ")
+  }
+   else(c_index ==3)
+     print("Problem is of MEDIUM level ")
+
 }
 
