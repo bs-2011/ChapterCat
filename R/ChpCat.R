@@ -34,6 +34,13 @@ predict_cl <- function(input){
   hc = hclust(d = dist(course1_pca[,c(4,5)], method = 'euclidean'), method = 'ward.D')
   y_hc = cutree(hc, 3)
 
+  # Saving the output with cluster name in particular course data used
+  course1_cluster = cbind(course1,y_hc)
+  course1_cluster$y_hc[course1_cluster$y_hc == 1] = "HARD"
+  course1_cluster$y_hc[course1_cluster$y_hc == 2] = "EASY"
+  course1_cluster$y_hc[course1_cluster$y_hc == 3] = "MEDIUM"
+  write.csv(course1_cluster, file = "/datadrive/dataset/ChapterCat_OUTPUT/bc_clust_output.csv",row.names = F)
+
   # function to find centroid in cluster i
   clust.centroid = function(i, dat, clusters) {
     ind = (clusters == i)
